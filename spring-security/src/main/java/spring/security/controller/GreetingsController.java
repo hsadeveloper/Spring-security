@@ -17,17 +17,16 @@ public class GreetingsController {
 
     @GetMapping("/private")
     public String privatePage(Model model, Authentication authentication) {
-        model.addAttribute("name", getName(authentication));
-        return "private"+ getName(authentication);
+        return "private " + getName(authentication);
     }
 
     private static String getName(Authentication authentication) {
         if (authentication.getPrincipal() instanceof OidcUser oidcUser) {
-            return oidcUser.getEmail();
+
+            return oidcUser.toString();
         }
         return authentication.getName();
     }
-
 
 
 }
