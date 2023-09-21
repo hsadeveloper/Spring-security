@@ -21,3 +21,51 @@ We want a nicer "authentication name" when logged in with Google, rather than th
 
 
 
+### Step 4: Create docker file 
+
+How to Dockerize Spring Boot Application?
+
+Create a Spring boot project.
+Create and place a Dockerfile inside the root directory of your application.
+spring-app/
+├── src/
+├── Dockerfile
+├── ...
+
+
+Create a jar file using one of the building tool like Gradle or Maven
+For Maven run 
+                        mvn clean package
+
+
+For  Gradle run 
+                         Gradle build
+
+
+Make sure to be inside the spring boot project  cd <whatever spring name>  
+Build the docker image using the following command
+      > docker build -t <image_name>:<tag> <path_to_Dockerfile_director>
+
+   > docker images 
+REPOSITORY             TAG                   IMAGE ID        CREATED         SIZE 
+spring-security-16    latest                751840e75312    23 hours ago    526MB
+
+
+   >  docker image rm <ImageId >    
+         
+Run a Docker container based on a specific Docker image 
+
+ > docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
+
+Ex.        >> docker run -d -p 8081:8080  spring-security-16
+
+The first port : the Docker host ( you can use this port to access to your container) to   access to the container from the outside.
+the second one : is the port used by your application.
+Example : I want to run tomcat server in a docker container, the default port of tomcat is 8080 and I want to expose my docker on port 9000 so i have to write :
+docker run -p 9000:8080 --name myTomcatContainer tomcat
+
+
+
+
+
+
