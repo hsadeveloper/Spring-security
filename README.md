@@ -3,10 +3,13 @@
   - [Link to Spring Initialzr](https://start.spring.io/)
 ---
     
-#### Step 2: Create a `/public` and `/private` controller page. No security is applied
+#### Step 2: Create two controller pages. No security is applied at this stage
+
+- `public page` - Anyone can see it.
+- `private page` Needs to be authenticated to see this page.
 ---
 ### Step 3: Add Spring Security dependency For Authentication
-- Go to the `build.gradle` file and add the following dependency to the depedencies section
+- Go to the `build.gradle` file and add the following dependency to the dependencies section
 -   `'org.springframework.boot:spring-boot-starter-security'`
 
   ---
