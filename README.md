@@ -5,13 +5,16 @@
     
 #### Step 2: Create a `/public` and `/private` controller page. No security is applied
 ---
-### Step 3: Add security dependency 
-- `'org.springframework.boot:spring-boot-starter-security'`
+### Step 3: Add Spring Security dependency For Authentication
+- Go to the `build.gradle` file and add the following dependency to the depedencies section
+-   `'org.springframework.boot:spring-boot-starter-security'`
 
-### Step 3: Add SSO, with oauth2-login
+  ---
+
+#### Step 3: Add SSO, with oauth2-login
+- OpenID from Google
 
 We introduce Spring Security. We create a `SecurityConfig` configuration class,where we will store all of our security-related configuration customizations.
-
 The first customization is to create a custom SecurityFilterChain, to override the defaults that
 Spring Boot give us. We make sure that every request must be authenticated, except the few things that we deem "public", such as `/` (public page), the favicon, the css resources, etc. We also introduce `.formLogin()` to ensure form login is enabled for us.
 
