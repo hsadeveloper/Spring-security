@@ -12,7 +12,7 @@
   ---
 
 #### Step 3: Add SSO, with oauth2-login
-- OpenID from Google
+
 
 We introduce Spring Security. We create a `SecurityConfig` configuration class,where we will store all of our security-related configuration customizations.
 The first customization is to create a custom SecurityFilterChain, to override the defaults that
