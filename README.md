@@ -21,7 +21,7 @@ Spring Boot give us. We make sure that every request must be authenticated, exce
 We also introduce our own UserDetailsService, because we don't want to have to copy the random
 password that Boot generates every time we boot up the app. It's an in-memory implementation, for demo purposes.
 
-#####   oauth2-login with google 
+<u><h4>Oauth 2 -login with google</h4> </u>
 
 We add the dependencies and the code to make SSO login work. It requires adding some properties, and just enabling "oauth2 login" in our previous security configuration. Everything stays the same.
 
