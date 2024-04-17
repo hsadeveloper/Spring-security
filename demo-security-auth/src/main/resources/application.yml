@@ -4,8 +4,8 @@ spring:
       client:
         registration:
           google:
-            client-id: PLACEHOLDER
-            client-secret: PLACEHOLDER
+            client-id: 965640157214-3he5neknv1tkh1h8e2va3vak0supe0ge.apps.googleusercontent.com
+            client-secret: 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
           github:
             client-id: <Id>
             client-secret: <secretId>
