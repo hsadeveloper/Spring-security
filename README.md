@@ -1,75 +1,85 @@
-# spring-auth
+# Spring-Authenticcation
+## How to secure Rest endpoints in Spring Boot?
+
 #### Step 1: Create an empty spring boot application.
   - [Link to Spring Initialzr](https://start.spring.io/)
+  - Optional depedencies:
+    - DevTools
+    - Spring Web
+    - Lombock
 ---
     
-#### Step 2: Create two controller pages. No security is applied at this stage
-- `public page` - Anyone can see it.
-- `private page` Needs to be authenticated to see this page.
+#### Step 2: Create two controller endpoints. No security is applied at this stage.
+
+- `public page` - : Accessible to anyone without authentication.
+- `private page`:  Requires authentication to access.
 ---
-### Step 3: Add Spring Security dependency For Authentication
-- Go to the `build.gradle` file and add the following dependency to the dependencies section
--   `'org.springframework.boot:spring-boot-starter-security'`
+#### Step 3: Add Spring Security dependency For Authentication
 
-  ---
+- For a Gradle project, go to the `build.gradle` file and add the following dependency to the dependencies section:
 
-#### Step 3: Add SSO, with oauth2-login
+  - Spring Security dependency `'org.springframework.boot:spring-boot-starter-security'`
 
+<i>Once accessing the secure endpoint, a login form will be displayed on the screen.</i>
 
-We introduce Spring Security. We create a `SecurityConfig` configuration class,where we will store all of our security-related configuration customizations.
-The first customization is to create a custom SecurityFilterChain, to override the defaults that
-Spring Boot give us. We make sure that every request must be authenticated, except the few things that we deem "public", such as `/` (public page), the favicon, the css resources, etc. We also introduce `.formLogin()` to ensure form login is enabled for us.
-
-We also introduce our own UserDetailsService, because we don't want to have to copy the random
-password that Boot generates every time we boot up the app. It's an in-memory implementation, for demo purposes.
-
-<u><h4>Oauth 2 -login with google</h4> </u>
-
-We add the dependencies and the code to make SSO login work. It requires adding some properties, and just enabling "oauth2 login" in our previous security configuration. Everything stays the same.
-
-We want a nicer "authentication name" when logged in with Google, rather than the ID we get back, so we tweak our GreetingController to display the e-mail when doing SSO login.
+- `UserName` by default is set to `user`.
+- `Password`: A new password will be generated and displayed on the console each time the application is re-run. An example of the generated password looks like `01825654-bd80-4606-913a-53237999f245`.
 
 
+---
 
-### Step 4: Create docker file 
+#### Step 4: Create a config class called `SecurityConfig`
 
-How to Dockerize Spring Boot Application?
+To fulfill the condition outlined in `Step 2`, create a SecurityConfig configuration class. This class will contain all our custom security-related configurations.
 
-Create a Spring boot project.
-Create and place a Dockerfile inside the root directory of your application.
-spring-app/
-├── src/
-├── Dockerfile
-├── ...
+Since all endpoints are secured by default, our first customization involves creating a custom `SecurityFilterChain` to override the default configurations provided by Spring Boot. We ensure that every request is authenticated, except for specific endpoints that we want to be 'public,' such as the root endpoint (public page), the favicon, and CSS resources. Additionally, we enable form login using `.formLogin()`.
 
+```In the configuration file add the following annotation ```
 
-Create a jar file using one of the building tool like Gradle or Maven
-For Maven run 
-                        mvn clean package
+`EnableWebSecurity` is an annotation provided by Spring Security. It's used to enable Spring Security's web security features in your application.
 
 
-For  Gradle run 
-                         Gradle build
+       @Bean
+      SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+            return http
+                    .authorizeHttpRequests( authorizeHttp -> {
+                                authorizeHttp.requestMatchers("/").permitAll();
+                                authorizeHttp.requestMatchers("/favicon.svg").permitAll();
+                                authorizeHttp.requestMatchers("/css/*").permitAll();
+                                authorizeHttp.requestMatchers("/error").permitAll();
+                                authorizeHttp.anyRequest().authenticated();
+                            })
+                    .formLogin(withDefaults())
+                    .build();
+        }
+
+<p>
+To avoid the inconvenience of copying the randomly generated password provided by Spring Boot upon each application startup, we introduce our own UserDetailsService. For demonstration purposes, we implement an in-memory user details service </p>
+
+---
+#### Step 5: [OpenID Connect - Google](https://developers.google.com/identity/openid-connect/openid-connect)
+
+To enable Single Sign-On (SSO) login functionality, we need to add dependencies and update our security configuration. 
+
+- Add the required dependency: `implementation("org.springframework.boot:spring-boot-starter-oauth2-client")`.
+- Replace the line `.formLogin(withDefaults())` in the config file with the appropriate configuration for OAuth2 login ```oauth2Login(withDefaults())```.
+- Update the `application.yml` file to include the necessary properties for SSO login.
+
+  ```spring:
+    security:
+      oauth2:
+        client:
+          registration:
+            google:
+              client-id: <Id>
+              client-secret:<secretId>
+            github:
+              client-id: <Id>
+              client-secret: <secretId>```
+##### How to get the ```client-id & client-secret```
+ - [video Tutorail](https://www.youtube.com/watch?v=5TBffxNBTCs)
+ - [Google API& Services/`Credentail`](https://console.cloud.google.com/apis/credentials?project=authentic-bongo-420019)
+
+##### [OAuth2 Login With Github](https://www.youtube.com/watch?v=us0VjFiHogo) 
 
 
-Make sure to be inside the spring boot project  cd <whatever spring name>  
-Build the docker image using the following command
-      > docker build -t <image_name>:<tag> <path_to_Dockerfile_director>
-
-   > docker images 
-REPOSITORY             TAG                   IMAGE ID        CREATED         SIZE 
-spring-security-16    latest                751840e75312    23 hours ago    526MB
-
-
-   >  docker image rm <ImageId >    
-         
-Run a Docker container based on a specific Docker image 
-
- > docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
-
-Ex.        >> docker run -d -p 8081:8080  spring-security-16
-
-The first port : the Docker host ( you can use this port to access to your container) to   access to the container from the outside.
-the second one : is the port used by your application.
-Example : I want to run tomcat server in a docker container, the default port of tomcat is 8080 and I want to expose my docker on port 9000 so i have to write :
-docker run -p 9000:8080 --name myTomcatContainer tomcat
