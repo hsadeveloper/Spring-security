@@ -89,4 +89,22 @@ To enable Single Sign-On (SSO)- OAuth2 login functionality, we need to add depen
 
 ##### [OAuth2 Login With Github](https://www.youtube.com/watch?v=us0VjFiHogo) 
 
+#### Step 6: Update `controller page` to look like the following 
+  ```
+  public String privatePage(Authentication authentication) {
+  		return "Welcome to this very private page, ~[" + getName(authentication) + "]~! 🥳🎉🍾";
+  	}
+  
+  	private String getName(Authentication authentication) {
+  		return Optional.of(authentication)
+  				.filter(OAuth2AuthenticationToken.class::isInstance)
+  				.map(OAuth2AuthenticationToken.class::cast)
+  				.map(OAuth2AuthenticationToken::getPrincipal)
+  				.map(OidcUser.class::cast)
+  				.map(OidcUser::getFullName)
+  				.orElseGet(authentication::getName);
+  	}
+
+```
+
 
