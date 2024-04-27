@@ -15,6 +15,7 @@ Getting Started
 #### Step 1: Create an empty spring boot application.
 
   - [Link to Spring Initialzr](https://start.spring.io/)
+  - [Shareable Link](https://start.spring.io/#!type=gradle-project&language=java&platformVersion=3.2.5&packaging=jar&jvmVersion=17&groupId=com.rtx.example&artifactId=demo-spring-authentication&name=demoSpringAuthentication&description=Demo%20project%20for%20Spring%20Boot&packageName=com.rtx.example.authentication&dependencies=lombok,mysql,web,h2,data-jdbc,devtools)
   - Optional depedencies:
     - DevTools
     - Spring Web
