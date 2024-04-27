@@ -1,7 +1,19 @@
 # Spring-Authenticcation
-## How to secure Rest endpoints in Spring Boot?
+## Introduction
+
+
+We'll begin with an unsecured REST API and explore the importance of authentication and web app defense. Then, we'll proceed to secure the REST API using Spring Security and its OAuth 2.0 authentication.
+ ---
+
+<img src=image-2.png height=300>
+
+ 
+
+Getting Started
+---
 
 #### Step 1: Create an empty spring boot application.
+
   - [Link to Spring Initialzr](https://start.spring.io/)
   - Optional depedencies:
     - DevTools
@@ -14,19 +26,32 @@
 - `public page` -: Accessible to anyone without authentication.
 - `private page`:  Requires authentication to access.
 ---
-#### Step 3: Enabling Spring Security - Add Spring Security dependency For Authentication
+#### Step 3: Enabling Spring Security 
 
+    Spring Security produces Authentication. They are used for:
+    - Authentication (authn): who is the user?
+    - Authorization (authz): is the user allowed to perform XYZ?
+
+    The SecurityContextHolder is where Spring Security stores the details of who is authenticated.
+
+    Authentication: represents the user. Contains:
+    Principal: user "identity" (name, email...)
+    GrantedAuthorities: "permissions" (roles, ...)
+    
+- Add Spring Security dependency For Authentication.
 - For a Gradle project, go to the `build. gradle` file and add the following dependency to the dependencies section:
 
   - Spring Security dependency `'org.springframework.boot:spring-boot-starter-security'`
-
 
 -  All HTTP request paths require authentication.
 -  Authentication is prompted with a simple login page
 - `UserName` by default is set to `user`.
 - `Password`: A new password will be generated and displayed on the console each time the application is re-run. An example of the generated password looks like `01825654-bd80-4606-913a-53237999f245`.
+  
 
+---
 
+![alt text](image.png)
 ---
 
 #### Step 4: Create a config class called `SecurityConfig`
@@ -89,22 +114,8 @@ To enable Single Sign-On (SSO)- OAuth2 login functionality, we need to add depen
 
 ##### [OAuth2 Login With Github](https://www.youtube.com/watch?v=us0VjFiHogo) 
 
-#### Step 6: Update `controller page` to look like the following 
-  ```
-  public String privatePage(Authentication authentication) {
-  		return "Welcome to this very private page, ~[" + getName(authentication) + "]~! 🥳🎉🍾";
-  	}
-  
-  	private String getName(Authentication authentication) {
-  		return Optional.of(authentication)
-  				.filter(OAuth2AuthenticationToken.class::isInstance)
-  				.map(OAuth2AuthenticationToken.class::cast)
-  				.map(OAuth2AuthenticationToken::getPrincipal)
-  				.map(OidcUser.class::cast)
-  				.map(OidcUser::getFullName)
-  				.orElseGet(authentication::getName);
-  	}
 
-```
+
+
 
 
