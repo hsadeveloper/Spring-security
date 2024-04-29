@@ -139,27 +139,27 @@ To enable Single Sign-On (SSO)- OAuth2 login functionality, we need to add depen
 -
 Make sure to update the `SecurityConfig` class
 
-   @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-      return http.authorizeHttpRequests(authorizeHttp -> {
-        authorizeHttp.requestMatchers("/cards/").permitAll();
-        authorizeHttp.requestMatchers("/favicon.svg").permitAll();
-        authorizeHttp.requestMatchers("/css/*").permitAll();
-        authorizeHttp.requestMatchers("/error").permitAll();
-        authorizeHttp.anyRequest().authenticated();
-      }).oauth2Login(withDefaults()).build();
-    }
+     @Bean
+      SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        return http.authorizeHttpRequests(authorizeHttp -> {
+          authorizeHttp.requestMatchers("/cards/").permitAll();
+          authorizeHttp.requestMatchers("/favicon.svg").permitAll();
+          authorizeHttp.requestMatchers("/css/*").permitAll();
+          authorizeHttp.requestMatchers("/error").permitAll();
+          authorizeHttp.anyRequest().authenticated();
+        }).oauth2Login(withDefaults()).build();
+      }
 
 -
 
-     ```  @GetMapping("/userinfo")
+        @GetMapping("/userinfo")
        public String userInformation() {
          Authentication auth = SecurityContextHolder.getContext().getAuthentication();
      
          OidcUser oAuth2User = (OidcUser) auth.getPrincipal();
      
          return "Name: " + oAuth2User.getFullName() + " , Email:  " + oAuth2User.getEmail();
-       }```
+       }
  
 ##### How to get the ```client-id & client-secret```
  - [video Tutorail](https://www.youtube.com/watch?v=5TBffxNBTCs)
