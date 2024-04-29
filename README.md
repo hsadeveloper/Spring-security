@@ -120,8 +120,10 @@ To enable Single Sign-On (SSO)- OAuth2 login functionality, we need to add depen
 
 - Add the required dependency: `implementation("org.springframework.boot:spring-boot-starter-oauth2-client")`.
 - Replace the line `.formLogin(withDefaults())` in the config file with the appropriate configuration for OAuth2 login ```oauth2Login(withDefaults())```.
+  
 - Update the `application.yml` file to include the necessary properties for SSO login.
-
+  
+-
   ```spring:
     security:
       oauth2:
@@ -134,6 +136,31 @@ To enable Single Sign-On (SSO)- OAuth2 login functionality, we need to add depen
               client-id: <Id>
               client-secret: <secretId>```
   
+-
+Make sure to update the `SecurityConfig` class
+
+   @Bean
+    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+      return http.authorizeHttpRequests(authorizeHttp -> {
+        authorizeHttp.requestMatchers("/cards/").permitAll();
+        authorizeHttp.requestMatchers("/favicon.svg").permitAll();
+        authorizeHttp.requestMatchers("/css/*").permitAll();
+        authorizeHttp.requestMatchers("/error").permitAll();
+        authorizeHttp.anyRequest().authenticated();
+      }).oauth2Login(withDefaults()).build();
+    }
+
+-
+
+     ```  @GetMapping("/userinfo")
+       public String userInformation() {
+         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+     
+         OidcUser oAuth2User = (OidcUser) auth.getPrincipal();
+     
+         return "Name: " + oAuth2User.getFullName() + " , Email:  " + oAuth2User.getEmail();
+       }```
+ 
 ##### How to get the ```client-id & client-secret```
  - [video Tutorail](https://www.youtube.com/watch?v=5TBffxNBTCs)
  - [Google API& Services/`Credentail`](https://console.cloud.google.com/apis/credentials?project=authentic-bongo-420019)
