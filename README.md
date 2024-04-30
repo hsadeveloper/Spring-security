@@ -76,6 +76,8 @@ The Spring Security framework uses a chain of filters to apply various security 
 
 [Read more](https://javarevisited.blogspot.com/2021/02/spring-security-interview-questions-answers-java.html#ixzz8YoVLwKkl)
 
+[Link to the documentation](https://docs.spring.io/spring-security/reference/servlet/authentication/architecture.html#servlet-authentication-securitycontextholder)
+
 ---
 
 #### Step 4: Create a config class called `SecurityConfig`
